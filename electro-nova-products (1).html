@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electro Nova Products</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #c8b89a;
+  color: #1a1f2e;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+#custom-cursor {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background: #1a56db;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s ease, height 0.25s ease, background 0.25s ease, opacity 0.25s ease;
+  mix-blend-mode: normal;
+  will-change: transform;
+}
+
+#cursor-follower {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(26,86,219,0.55);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.35s ease, height 0.35s ease, border-color 0.3s ease, opacity 0.3s ease;
+  will-change: transform;
+}
+
+body.cursor-hover #custom-cursor {
+  width: 20px;
+  height: 20px;
+  background: rgba(26,86,219,0.75);
+}
+
+body.cursor-hover #cursor-follower {
+  width: 58px;
+  height: 58px;
+  border-color: rgba(26,86,219,0.35);
+}
+
+body.cursor-card #custom-cursor {
+  width: 16px;
+  height: 16px;
+  background: #1a56db;
+  mix-blend-mode: multiply;
+}
+
+body.cursor-card #cursor-follower {
+  width: 72px;
+  height: 72px;
+  border-color: rgba(26,86,219,0.2);
+}
+
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #1a56db, #60a5fa, #a5c8ff);
+  z-index: 9999;
+  box-shadow: 0 0 10px rgba(26,86,219,0.6), 0 0 20px rgba(96,165,250,0.3);
+  transition: width 0.05s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+
+
+
+@keyframes headerSlideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+
+@keyframes logoPulse {
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 0px rgba(26,86,219,0)); }
+  50%       { filter: brightness(1.08) drop-shadow(0 0 10px rgba(26,86,219,0.35)); }
+}
+
+@keyframes accentFloat {
+  0%, 100% { transform: translateX(-50%) scaleX(1);   opacity: 1; }
+  50%       { transform: translateX(-50%) scaleX(1.7); opacity: 0.65; }
+}
+
+
+@keyframes shimmerSweep {
+  0%   { left: -100%; }
+  100% { left: 200%; }
+}
+
+
+@keyframes footerLogoBreathe {
+  0%, 100% { opacity: 1;    transform: scale(1); }
+  50%       { opacity: 0.88; transform: scale(0.97); }
+}
+
+
+@keyframes titleReveal {
+  from { opacity: 0; letter-spacing: 0.18em; transform: translateY(18px); }
+  to   { opacity: 1; letter-spacing: -0.02em; transform: translateY(0); }
+}
+
+
+@keyframes btnRipple {
+  0%   { transform: scale(0); opacity: 0.35; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 0 48px;
+  height: 80px;
+  background: #0f2044;
+  border-bottom: 3px solid #0d0d0d;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.22);
+  animation: headerSlideDown 0.7s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+
+.logo img {
+  width: 140px;
+  height: 70px;
+  object-fit: contain;
+  animation: logoPulse 4s ease-in-out infinite;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.logo img:hover {
+  transform: scale(1.07) rotate(-1deg);
+}
+
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+nav a {
+  position: relative;
+  color: #c8d6e8;
+  padding: 8px 15px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  overflow: hidden;
+  transition:
+    color          0.3s cubic-bezier(0.4,0,0.2,1),
+    border-color   0.3s cubic-bezier(0.4,0,0.2,1),
+    background     0.3s cubic-bezier(0.4,0,0.2,1),
+    letter-spacing 0.3s cubic-bezier(0.4,0,0.2,1),
+    transform      0.3s cubic-bezier(0.4,0,0.2,1);
+  white-space: nowrap;
+}
+
+
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 15px;
+  right: 15px;
+  height: 2px;
+  background: linear-gradient(90deg, #1a56db, #60a5fa);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+
+nav a:hover {
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  letter-spacing: 0.12em;
+  transform: translateY(-1px);
+}
+
+nav a:hover::after {
+  transform: scaleX(1);
+}
+
+
+.main-title {
+  text-align: center;
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f2044;
+  margin: 64px 0 8px;
+  animation: titleReveal 0.9s cubic-bezier(0.22,1,0.36,1) both 0.2s;
+}
+
+.main-title::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 3px;
+  background: #1a56db;
+  margin: 16px auto 0;
+  border-radius: 2px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: accentFloat 3.5s ease-in-out infinite;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+  padding: 48px 5%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+
+.card {
+  background: #ede5d8;
+  border: 2px solid black;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow:
+    0 1px 2px  rgba(15,32,68,0.04),
+    0 4px 8px  rgba(15,32,68,0.06),
+    0 12px 24px rgba(15,32,68,0.09),
+    0 24px 48px rgba(15,32,68,0.07);
+  transition:
+    transform    0.45s cubic-bezier(0.34,1.56,0.64,1),
+    box-shadow   0.45s cubic-bezier(0.4,0,0.2,1),
+    border-color 0.35s cubic-bezier(0.4,0,0.2,1);
+  will-change: transform;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255,255,255,0.18) 50%,
+    transparent 80%
+  );
+  z-index: 3;
+  pointer-events: none;
+}
+
+.card:hover::before {
+  animation: shimmerSweep 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+
+.card:hover {
+  transform: translateY(-12px) scale(1.015);
+  border-color: #1a56db;
+  box-shadow:
+    0 2px 4px   rgba(15,32,68,0.05),
+    0 8px 16px  rgba(15,32,68,0.09),
+    0 24px 48px rgba(15,32,68,0.14),
+    0 48px 80px rgba(15,32,68,0.11),
+    0 0   40px  rgba(26,86,219,0.12);
+}
+
+
+.img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  border-bottom: 2px solid #1e3d72;
+  transition: transform 0.6s cubic-bezier(0.4,0,0.2,1), filter 0.4s ease;
+}
+
+
+.img-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(255,255,255,0.12) 0%,
+    rgba(26,86,219,0.08) 60%,
+    rgba(15,32,68,0.22) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1),
+              backdrop-filter 0.45s cubic-bezier(0.4,0,0.2,1);
+  pointer-events: none;
+}
+
+.card:hover .img-wrap::after {
+  opacity: 1;
+  backdrop-filter: blur(2px) saturate(1.15);
+  -webkit-backdrop-filter: blur(2px) saturate(1.15);
+}
+
+.card:hover img {
+  transform: scale(1.07);
+  filter: brightness(1.04) saturate(1.1);
+}
+
+
+.card-body {
+  padding: 14px 14px 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card h4 {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #061d54;
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+  transition: letter-spacing 0.3s ease, color 0.3s ease;
+}
+
+.card:hover h4 {
+  letter-spacing: 0.01em;
+  color: #1a56db;
+}
+
+.card p {
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.55;
+  flex: 1;
+  margin: 0 0 10px;
+  transition: color 0.3s ease;
+}
+
+
+.card span {
+  display: block;
+  padding: 10px 15px;
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f2044;
+  background: #dfd5c4;
+  border-top: 2px solid #1e3d72;
+  transition: background 0.35s ease, color 0.35s ease, padding 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+
+.card:hover span {
+  background: linear-gradient(90deg, #dfd5c4, #cfc3af);
+  padding-left: 22px;
+  color: #1a56db;
+}
+
+
+.btn-row {
+  display: flex;
+  gap: 6px;
+  padding: 10px 15px 12px;
+  background: #dfd5c4;
+}
+
+.btn {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  padding: 10px 9px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  border: 2px solid #1e3d72;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition:
+    background     0.3s cubic-bezier(0.4,0,0.2,1),
+    color          0.3s cubic-bezier(0.4,0,0.2,1),
+    border-color   0.3s cubic-bezier(0.4,0,0.2,1),
+    transform      0.3s cubic-bezier(0.34,1.56,0.64,1),
+    box-shadow     0.3s cubic-bezier(0.4,0,0.2,1),
+    letter-spacing 0.3s ease;
+}
+
+
+.btn::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: rgba(255,255,255,0.35);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.btn:active::after {
+  animation: btnRipple 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+
+.btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  letter-spacing: 0.07em;
+}
+
+.btn-details {
+  background: #0f2044;
+  color: #ffffff;
+}
+
+.btn-details:hover {
+  background: #1a56db;
+  border-color: #1a56db;
+  box-shadow: 0 6px 18px rgba(26,86,219,0.35);
+}
+
+.btn-download {
+  background: transparent;
+  color: #0f2044;
+}
+
+.btn-download:hover {
+  background: #1e3d72;
+  color: #ffffff;
+  border-color: #1a56db;
+  box-shadow: 0 6px 18px rgba(15,32,68,0.25);
+}
+
+
+.card-details {
+  display: none;
+  padding: 16px 20px;
+  font-size: 13px;
+  color: #374151;
+  line-height: 1.75;
+  border-top: 1px solid rgba(30,61,114,0.2);
+  background: #e8dfd0;
+  
+}
+
+
+hr {
+  border: none;
+  height: 1px;
+  background: rgba(0,0,0,0.1);
+  margin: 0;
+}
+
+
+footer {
+  background: #0f2044;
+  border-top: 3px solid #1a56db;
+  padding: 64px 40px 0;
+  color: #c8d6e8;
+}
+
+.lastarea {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 48px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+}
+
+.mimi,
+.meow {
+  text-align: left;
+}
+
+.lastlogo {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+  margin: 0 0 16px;
+  animation: footerLogoBreathe 5s ease-in-out infinite;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), filter 0.3s ease;
+}
+
+.lastlogo:hover {
+  transform: scale(1.08);
+  filter: brightness(1.15) drop-shadow(0 0 12px rgba(26,86,219,0.4));
+  animation-play-state: paused;
+}
+
+.mimi p {
+  font-size: 14px;
+  color: rgba(200,214,232,0.65);
+  line-height: 1.75;
+  max-width: 220px;
+  transition: color 0.3s ease;
+}
+
+.mimi p:hover {
+  color: rgba(200,214,232,0.9);
+}
+
+.meow h3,
+.mimi h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 18px;
+}
+
+.meow a {
+  display: block;
+  color: rgba(200,214,232,0.65);
+  font-size: 14px;
+  text-decoration: none;
+  padding: 6px 0;
+  position: relative;
+  overflow: hidden;
+  transition:
+    color        0.3s cubic-bezier(0.4,0,0.2,1),
+    padding-left 0.35s cubic-bezier(0.4,0,0.2,1),
+    letter-spacing 0.3s ease;
+}
+
+.meow a::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, #1a56db, #60a5fa);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+
+.meow a:hover {
+  color: #ffffff;
+  padding-left: 10px;
+  letter-spacing: 0.04em;
+}
+
+.meow a:hover::after {
+  transform: scaleX(0.6);
+}
+
+.bottom {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  font-size: 13px;
+  color: rgba(200,214,232,0.45);
+  letter-spacing: 0.03em;
+  transition: color 0.3s ease;
+}
+
+.bottom:hover {
+  color: rgba(200,214,232,0.7);
+}
+
+
+@media (max-width: 1024px) {
+  .lastarea {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 14px 20px;
+    height: auto;
+    justify-content: center;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  nav a {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .grid {
+    padding: 24px 20px;
+  }
+
+  .card img {
+    height: 180px;
+  }
+
+  .btn-row {
+    flex-direction: column;
+  }
+
+  .lastarea {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .mimi p {
+    max-width: 100%;
+  }
+
+  footer {
+    padding: 48px 24px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-title {
+    font-size: 22px;
+  }
+
+  .card p {
+    font-size: 13px;
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+<div id="scroll-progress"></div>
+
+<div id="custom-cursor"></div>
+<div id="cursor-follower"></div>
+
+
+<header data-aos="fade-down">
+  <div class="logo">
+    <img src="WhatsApp Image 2026-03-29 at 12.50.09 PM.jpeg">
+  </div>
+  <nav>
+    <a href="home.html">HOME</a>
+    <a href="about.html">ABOUT US</a>
+    <a href="electro-nova-products (1).html">PRODUCTS</a>
+    <a href="electro-nova-brands (1).html">BRANDS</a>
+    <a href="categories.html">CATEGORIES</a>
+    <a href="contact.html">CONTACT</a>
+  </nav>
+</header>
+
+<h1 class="main-title" data-aos="fade-right"  data-aos-duration="1000">
+  Electro Nova Products
+</h1>
+
+<div class="grid">
+
+ 
+  <div class="card" data-aos="fade-up" data-aos-delay="0" data-aos-duration="800">
+    <div class="img-wrap"><img src="WhatsApp Image 2026-03-29 at 5.28.40 PM.jpeg"></div>
+    <div class="card-body">
+      <h4>NOVATECH CAMERA</h4>
+      <p>This intuitive interface helps you position your subject perfectly against the horizon, ensuring your shots are always balanced and professional.</p>
+      <span>PKR 56,000</span>
+      <div class="btn-row">
+        <button class="btn btn-details">VIEW DETAILS</button>
+        <a class="btn btn-download" href="file1.docx" download>Download</a>
+      </div>
+    </div>
+    <div class="card-details">Feature: Precision $2r = 3$ Composition Matrix. The Nova Tech series introduces a specialized $2r = 3$ alignment grid designed for high-precision framing. By dividing the sensor field into specific geometric ratios, it allows photographers to achieve perfect symmetry and structural balance in every shot.</div>
+  </div>
+
+ 
+  <div class="card" data-aos="fade-up" data-aos-delay="80" data-aos-duration="800">
+    <div class="img-wrap"><img src="lilo401-watch-6853386.jpg"></div>
+    <div class="card-body">
+      <h4>PULSE 5 SMARTWATCH</h4>
+      <p>This intuitive interface helps you position your health goals perfectly against your lifestyle, ensuring your stats are always balanced and professional.</p>
+      <span>$900</span>
+      <div class="btn-row">
+        <button class="btn btn-details">VIEW DETAILS</button>
+        <a class="btn btn-download" href="file2.docx" download>Download</a>
+      </div>
+    </div>
+    <div class="card-details">Description: Engineered with a high-precision biometric sensor array, the Nova Tech Smartwatch delivers real time analytics for over 100 sports modes. Its hyper-efficient battery management system ensures up to 14 days of continuous tracking.</div>
+  </div>
+
+  <div class="card" data-aos="fade-up" data-aos-delay="160" data-aos-duration="800">
+    <div class="img-wrap"><img src="evilowl-playstation-6689793.jpg"></div>
+    <div class="card-body">
+      <h4>PLAYSTATION 5</h4>
+      <p>This intuitive interface helps you position your performance perfectly against the graphics, ensuring your gaming is always balanced and professional.</p>
+      <span>$800</span>
+      <div class="btn-row">
+        <button class="btn btn-details">VIEW DETAILS</button>
+        <a class="btn btn-download" href="file3.docx" download>Download</a>
+      </div>
+    </div>
+    <div class="card-details">Description: Engineered with a high-precision graphics processing array, the Nova Tech PlayStation delivers real-time rendering for over 100 gaming titles. Its hyper-efficient thermal management system ensures up to 14 hours of continuous peak-performance.</div>
+  </div>
+
+  
+  <div class="card" data-aos="fade-up" data-aos-delay="240" data-aos-duration="800">
+    <div class="img-wrap"><img src="stocksnap-headphones-2588056.jpg"></div>
+    <div class="card-body">
+      <h4>AEROTAB HEADPHONES</h4>
+      <p>This intuitive interface helps you position your music perfectly against the background, ensuring your audio is always balanced and professional.</p>
+      <span>$1,100</span>
+      <div class="btn-row">
+        <button class="btn btn-details">VIEW DETAILS</button>
+        <a class="btn btn-download" href="file4.docx" download>Download</a>
+      </div>
+    </div>
+    <div class="card-details">Description: Engineered with a high-precision acoustic driver array, the Nova Tech Headphones deliver real-time clarity for over 100 audio profiles. Its hyper-efficient power management system ensures up to 60 hours of continuous playback.</div>
+  </div>
+
+  
+  <div class="card" data-aos="fade-up" data-aos-delay="320" data-aos-duration="800">
+    <div class="img-wrap"><img src="maxwdhs-airpods-7976095.jpg"></div>
+    <div class="card-body">
+      <h4>AIRPODS PRO</h4>
+      <p>This intuitive interface helps you position your audio perfectly against the ambient noise, ensuring your sound is always balanced and professional.</p>
+      <span>$500</span>
+      <div class="btn-row">
+        <button class="btn btn-details">VIEW DETAILS</button>
+        <a class="btn btn-download" href="file5.docx" download>Download</a>
+      </div>
+    </div>
+    <div class="card-details">Description: Engineered with a high-precision spatial audio array, the Nova Tech Airpods deliver real-time immersion for over 100 sound environments. Its hyper-efficient wireless management system ensures up to 30 hours of continuous listening.</div>
+  </div>
+
+ 
+  <div class="card" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
+    <div class="img-wrap"><img src="stocksnap-keyboard-2590095.jpg"></div>
+    <div class="card-body">
+      <h4>NOVA KEYBOARD</h4>
+      <p>This intuitive interface helps you position your keystrokes perfectly against the speed, ensuring your typing is always balanced and professional.</p>
+      <span>$650</span>
+      <div class="btn-row">
+        <button class="btn btn-details">VIEW DETAILS</button>
+        <a class="btn btn-download" href="file6.docx" download>Download</a>
+      </div>
+    </div>
+    <div class="card-details">Description: Engineered with a high-precision tactile switch array, the Nova Tech Keyboard delivers real-time response for over 100 typing styles. Its hyper-efficient input management system ensures millions of continuous keystrokes.</div>
+  </div>
+
+ 
+  <div class="card" data-aos="fade-up" data-aos-delay="480" data-aos-duration="800">
+    <div class="img-wrap"><img src="moses-case-fan-432100.jpg"></div>
+    <div class="card-body">
+      <h4>GPU POWER</h4>
+      <p>This intuitive interface helps you position your wattage perfectly against the workload, ensuring your frames are always balanced and professional.</p>
+      <span>$700</span>
+      <div class="btn-row">
+        <button class="btn btn-details">VIEW DETAILS</button>
+        <a class="btn btn-download" href="file7.docx" download>Download</a>
+      </div>
+    </div>
+    <div class="card-details">Description: Engineered with a high-precision voltage regulator array, the Nova Tech GPU Power delivers real-time stability for over 100 rendering tasks. Its hyper-efficient thermal management system ensures sustained continuous clock-speeds.</div>
+  </div>
+
+ 
+  <div class="card" data-aos="fade-up" data-aos-delay="560" data-aos-duration="800">
+    <div class="img-wrap"><img src="wikimediaimages-video-game-console-2202592.jpg"></div>
+    <div class="card-body">
+      <h4>ROUTER X</h4>
+      <p>This intuitive interface helps you position your devices perfectly against the bandwidth, ensuring your connection is always balanced and professional.</p>
+      <span>$300</span>
+      <div class="btn-row">
+        <button class="btn btn-details">VIEW DETAILS</button>
+        <a class="btn btn-download" href="file8.docx" download>Download</a>
+      </div>
+    </div>
+    <div class="card-details">Description: Engineered with a high-precision signal antenna array, the Nova Tech Router X delivers real-time bandwidth for over 100 connected devices. Its hyper-efficient traffic management system ensures ultra-fast continuous connectivity.</div>
+  </div>
+
+</div>
+<hr>
+
+<footer class="footer">
+  <div class="lastarea">
+
+    <div class="mimi" data-aos="fade-right" data-aos-duration="800">
+      <img src="WhatsApp Image 2026-03-29 at 12.50.09 PM.jpeg" class="lastlogo">
+      <p>Electro Nova brings innovation, quality, and smart solutions.</p>
+    </div>
+
+    <div class="meow" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
+      <h3>Quick Links</h3>
+      <a href="home.html">Home</a>
+      <a href="electro-nova-products (1).html">Products</a>
+      <a href="electro-nova-brands (1).html">Brands</a>
+      <a href="categories.html">Categories</a>
+      <a href="contact.html">Contact</a>
+    </div>
+
+    <div class="mimi" data-aos="fade-left" data-aos-delay="200" data-aos-duration="800">
+      <h3>Contact</h3>
+      <p>📍 Karachi, Pakistan</p>
+      <p>📞 +92-300-1234567</p>
+      <p>📧 info@electro.com</p>
+      <p>🕐 Mon-Sat: 10AM - 8PM</p>
+    </div>
+
+  </div>
+  <hr>
+  <div class="bottom">
+    <p>© 2026 Electro Nova | All Rights Reserved</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+$(document).ready(function () {
+
+  AOS.init({
+    duration: 1000,
+    once: true,
+    easing: 'ease-in-out'
+  });
+
+  $(".btn-details").on("click", function () {
+    $(this).closest(".card").find(".card-details").slideToggle(320);
+  });
+
+  $(window).on("load", function () {
+    AOS.refreshHard();
+  });
+
+});
+const progressBar = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  progressBar.style.width = pct + '%';
+}, { passive: true });
+
+
+const cursor     = document.getElementById('custom-cursor');
+const follower   = document.getElementById('cursor-follower');
+let fX = 0, fY = 0, mX = 0, mY = 0;
+
+document.addEventListener('mousemove', e => {
+  mX = e.clientX; mY = e.clientY;
+  cursor.style.left = mX + 'px';
+  cursor.style.top  = mY + 'px';
+});
+
+
+(function animateFollower() {
+  fX += (mX - fX) * 0.12;
+  fY += (mY - fY) * 0.12;
+  follower.style.left = fX + 'px';
+  follower.style.top  = fY + 'px';
+  requestAnimationFrame(animateFollower);
+})();
+
+
+const tiltCards = document.querySelectorAll('.card, .review-card');
+const MAX_TILT = 8;
+
+tiltCards.forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width  / 2;
+    const cy = rect.top  + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width  / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+    const rotX = -dy * MAX_TILT;
+    const rotY =  dx * MAX_TILT;
+    card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-10px) scale(1.015)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.transition = 'transform 0.55s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.45s ease, border-color 0.35s ease';
+    setTimeout(() => { card.style.transition = ''; }, 550);
+  });
+  card.addEventListener('mouseenter', () => {
+    card.style.transition = 'transform 0.12s ease, box-shadow 0.45s ease, border-color 0.35s ease';
+  });
+});
+
+</script>
+
+</body>
+</html>

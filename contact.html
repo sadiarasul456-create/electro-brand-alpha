@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us – Electro Nova</title>
+
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+
+:root {
+  --navy: #0f2044;
+  --beige: #c8b89a;
+  --blue: #1a56db;
+  --cyan: #00bcd4;
+  --blue-mid: #4a76c3;
+  --blue-light: #7aa3e0;
+  --glass-bg: rgba(0, 0, 0, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --smooth: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #c8b89a;
+  color: #1a1f2e;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+#custom-cursor {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background: #1a56db;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s ease, height 0.25s ease, background 0.25s ease, opacity 0.25s ease;
+  mix-blend-mode: normal;
+  will-change: transform;
+}
+
+#cursor-follower {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(26,86,219,0.55);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.35s ease, height 0.35s ease, border-color 0.3s ease, opacity 0.3s ease;
+  will-change: transform;
+}
+
+body.cursor-hover #custom-cursor {
+  width: 20px;
+  height: 20px;
+  background: rgba(26,86,219,0.75);
+}
+
+body.cursor-hover #cursor-follower {
+  width: 58px;
+  height: 58px;
+  border-color: rgba(26,86,219,0.35);
+}
+
+body.cursor-card #custom-cursor {
+  width: 16px;
+  height: 16px;
+  background: #1a56db;
+  mix-blend-mode: multiply;
+}
+
+body.cursor-card #cursor-follower {
+  width: 72px;
+  height: 72px;
+  border-color: rgba(26,86,219,0.2);
+}
+
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #1a56db, #60a5fa, #a5c8ff);
+  z-index: 9999;
+  box-shadow: 0 0 10px rgba(26,86,219,0.6), 0 0 20px rgba(96,165,250,0.3);
+  transition: width 0.05s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 0 48px;
+  height: 80px;
+  background: rgba(15, 32, 68, 0.93);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(74, 118, 195, 0.3);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.04) inset;
+}
+
+.logo img {
+  width: 140px;
+  height: 70px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(74,118,195,0.3));
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+nav a {
+  color: #c8d6e8;
+  padding: 8px 15px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: var(--smooth);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+nav a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(74,118,195,0.15), rgba(122,163,224,0.08));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 6px;
+}
+
+nav a:hover::before { opacity: 1; }
+
+nav a:hover,
+nav a.active {
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.07);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74,118,195,0.2);
+}
+
+
+.mainarea {
+  min-height: 100vh;
+  background: url('Gemini_Generated_Image_jszk3yjszk3yjszk.png') center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  position: relative;
+}
+
+
+.mainarea::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(15,32,68,0.25) 0%, rgba(0,0,0,0.15) 100%);
+  pointer-events: none;
+}
+
+
+.heading {
+  font-family: 'Syne', sans-serif;
+  color: #00bcd4;
+  font-size: 33px;
+  font-weight: 800;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 10px;
+  text-shadow: 0 0 40px rgba(0,188,212,0.55), 0 0 80px rgba(0,188,212,0.2);
+  position: relative;
+  letter-spacing: 0.03em;
+}
+
+.heading::after {
+  content: '';
+  display: block;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, transparent, #00bcd4, transparent);
+  margin: 8px auto 0;
+  border-radius: 2px;
+  animation: headingLine 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s forwards;
+}
+
+@keyframes headingLine {
+  to { width: 60%; }
+}
+
+.chotu {
+  color: rgba(255,255,255,0.82);
+  font-style: italic;
+  margin-bottom: 40px;
+  font-size: 19px;
+  text-align: center;
+  position: relative;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+}
+
+
+.mimi {
+  background: rgba(0, 0, 0, 0.58);
+  padding: 48px 44px;
+  border-radius: 22px;
+  display: flex;
+  gap: 48px;
+
+
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+
+  width: 90%;
+  max-width: 1100px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.45),
+    0 1px 0 rgba(255,255,255,0.08) inset,
+    0 -1px 0 rgba(0,0,0,0.2) inset,
+    inset 0 0 80px rgba(74,118,195,0.04);
+  position: relative;
+  overflow: hidden;
+  transition: var(--smooth);
+}
+
+
+.mimi::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,188,212,0.4), rgba(74,118,195,0.4), transparent);
+  border-radius: 1px;
+}
+
+
+.mimi::after {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(0,188,212,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.bigpart {
+  flex: 1;
+  color: white;
+}
+
+.bigpart h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 23px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: whitesmoke;
+  font-style: italic;
+  position: relative;
+  display: inline-block;
+}
+
+.bigpart h3::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; left: 0;
+  width: 40px; height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--blue-mid));
+  border-radius: 2px;
+  transition: width 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.bigpart:hover h3::after { width: 100%; }
+
+
+.bigpart input,
+.bigpart textarea {
+  width: 100%;
+  padding: 14px 18px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  outline: none;
+  resize: none;
+
+  transition:
+    border-color 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    background 0.35s ease,
+    transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.bigpart input::placeholder,
+.bigpart textarea::placeholder {
+  color: rgba(255,255,255,0.38);
+  transition: color 0.3s ease;
+}
+
+
+.bigpart input:hover,
+.bigpart textarea:hover {
+  border-color: rgba(74,118,195,0.45);
+  background: rgba(255,255,255,0.09);
+}
+
+.bigpart input:focus,
+.bigpart textarea:focus {
+  border-color: rgba(0, 188, 212, 0.7);
+  background: rgba(0, 188, 212, 0.06);
+  box-shadow:
+    0 0 0 3px rgba(0, 188, 212, 0.12),
+    0 0 20px rgba(0, 188, 212, 0.15),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  transform: translateY(-1px);
+}
+
+.bigpart input:focus::placeholder,
+.bigpart textarea:focus::placeholder {
+  color: rgba(255,255,255,0.22);
+}
+
+.bigpart button {
+  margin-top: 14px;
+  padding: 14px 32px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+ 
+  background: linear-gradient(135deg, #1a56db 0%, #00bcd4 100%);
+  box-shadow:
+    0 4px 20px rgba(26, 86, 219, 0.4),
+    0 1px 0 rgba(255,255,255,0.15) inset;
+
+  transition:
+    transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    background 0.35s ease;
+}
+
+
+.bigpart button::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -110%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255,255,255,0.22) 40%,
+    rgba(255,255,255,0.08) 60%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.bigpart button:hover::before {
+  left: 160%;
+}
+
+.bigpart button:hover {
+  background: linear-gradient(135deg, #00bcd4 0%, #1a56db 100%);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow:
+    0 8px 32px rgba(0, 188, 212, 0.45),
+    0 1px 0 rgba(255,255,255,0.2) inset;
+}
+
+.bigpart button:active {
+  transform: translateY(-1px) scale(0.99);
+  box-shadow: 0 4px 16px rgba(0, 188, 212, 0.3);
+}
+
+
+.info {
+  flex: 1;
+  color: white;
+  font-style: italic;
+}
+
+.info h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: whitesmoke;
+  margin-bottom: 10px;
+  margin-top: 26px;
+  font-style: italic;
+  position: relative;
+  display: inline-block;
+}
+
+.info h3::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 30px; height: 1.5px;
+  background: linear-gradient(90deg, var(--cyan), transparent);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.info:hover h3::after { width: 100%; }
+
+.info h3:first-child { margin-top: 0; }
+
+.info p {
+  font-size: 16px;
+  line-height: 1.85;
+  color: rgba(255,255,255,0.80);
+}
+
+.info a {
+  color: #00bcd4;
+  text-decoration: none;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+
+.info a:hover {
+  color: #7ee8f5;
+  text-shadow: 0 0 12px rgba(0,188,212,0.4);
+}
+
+
+#map {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  margin-top: 20px;
+  border: 1px solid rgba(74,118,195,0.35);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.05),
+    inset 0 0 20px rgba(0,0,0,0.3),
+    0 8px 24px rgba(0,0,0,0.4);
+  overflow: hidden;
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+#map:hover {
+  border-color: rgba(0,188,212,0.45);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.06),
+    inset 0 0 20px rgba(0,0,0,0.3),
+    0 12px 32px rgba(0,188,212,0.18);
+}
+
+.mimi > .bigpart {
+  border-right: 1px solid rgba(255,255,255,0.07);
+  padding-right: 48px;
+}
+
+
+footer {
+  background: rgba(15, 32, 68, 0.97);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(26, 86, 219, 0.35);
+  padding: 64px 40px 0;
+  color: #c8d6e8;
+}
+
+.lastarea {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 48px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+}
+
+.footer-mimi, .meow { text-align: left; }
+
+.lastlogo {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+  margin: 0 0 16px 0;
+  filter: drop-shadow(0 0 6px rgba(74,118,195,0.3));
+}
+
+.footer-mimi p {
+  font-size: 14px;
+  color: rgba(200,214,232,0.65);
+  line-height: 1.75;
+  max-width: 220px;
+}
+
+.meow h3,
+.footer-mimi h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 18px;
+}
+
+.meow a {
+  display: block;
+  color: rgba(200,214,232,0.65);
+  font-size: 14px;
+  text-decoration: none;
+  padding: 6px 0;
+  transition: var(--smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.meow a::before {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 4px;
+  width: 0;
+  height: 1px;
+  background: var(--blue-light);
+  transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.meow a:hover::before { width: 100%; }
+
+.meow a:hover {
+  color: #ffffff;
+  padding-left: 8px;
+}
+
+.bottom {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  font-size: 13px;
+  color: rgba(200,214,232,0.45);
+  letter-spacing: 0.03em;
+}
+
+
+[data-aos] {
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 14px 20px;
+    height: auto;
+    justify-content: center;
+  }
+
+  nav { flex-wrap: wrap; justify-content: center; gap: 2px; }
+  nav a { padding: 6px 10px; font-size: 11px; }
+
+  .mimi {
+    flex-direction: column;
+    gap: 32px;
+    padding: 32px 24px;
+  }
+
+  .mimi > .bigpart {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    padding-right: 0;
+    padding-bottom: 32px;
+  }
+
+  .lastarea { grid-template-columns: 1fr; gap: 32px; }
+  .footer-mimi p { max-width: 100%; }
+  footer { padding: 48px 24px 0; }
+}
+</style>
+</head>
+
+<body>
+<div id="scroll-progress"></div>
+
+
+<div id="custom-cursor"></div>
+<div id="cursor-follower"></div>
+
+<header data-aos="fade-down" data-aos-duration="800" data-aos-easing="ease-out-cubic">
+  <div class="logo">
+    <img src="WhatsApp Image 2026-03-29 at 12.50.09 PM.jpeg" alt="Electro Nova">
+  </div>
+  <nav>
+    <a href="home.html">HOME</a>
+    <a href="about.html">ABOUT US</a>
+    <a href="electro-nova-products (1).html">PRODUCTS</a>
+    <a href="electro-nova-brands (1).html">BRANDS</a>
+    <a href="categories.html">CATEGORIES</a>
+    <a href="contact.html" class="active">CONTACT</a>
+  </nav>
+</header>
+
+
+<section class="mainarea">
+
+  <h1 class="heading" data-aos="zoom-in" data-aos-duration="800" data-aos-easing="ease-out-cubic">GET IN TOUCH</h1>
+  <p class="chotu" data-aos="fade-up" data-aos-delay="150" data-aos-duration="700" data-aos-easing="ease-out-cubic">We'd love to hear from you!</p>
+
+  <div class="mimi" data-aos="fade-up" data-aos-delay="250" data-aos-duration="900" data-aos-easing="ease-out-quart">
+
+    
+    <div class="bigpart">
+      <h3>Send Us a Message</h3>
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea rows="5" placeholder="Your Message"></textarea>
+      <button type="button">Send Message</button>
+    </div>
+
+
+    <div class="info">
+      <h3>Visit Our Showroom</h3>
+      <p>📍 123 Commercial Avenue, Block 5 Karachi</p>
+      <p>📞 +92-300-1234567</p>
+      <p>📧 <a href="mailto:info@electro.com">info@electro.com</a></p>
+
+      <h3>Opening Hours</h3>
+      <p>Mon – Sat: 10AM – 10PM</p>
+      <p>Sunday: Closed</p>
+
+      <div id="map"></div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<footer>
+  <div class="lastarea">
+
+    <div class="footer-mimi">
+      <img src="WhatsApp Image 2026-03-29 at 12.50.09 PM.jpeg" class="lastlogo" alt="Electro Nova">
+      <p>Electro Nova brings innovation, quality, and smart solutions.</p>
+    </div>
+
+    <div class="meow">
+      <h3>Quick Links</h3>
+      <a href="home.html">Home</a>
+      <a href="electro-nova-products (1).html">Products</a>
+      <a href="electro-nova-brands (1).html">Brands</a>
+      <a href="categories.html">Categories</a>
+      <a href="contact.html">Contact</a>
+    </div>
+
+    <div class="footer-mimi">
+      <h3>Contact</h3>
+      <p>📍 Karachi, Pakistan</p>
+      <p>📞 +92-300-1234567</p>
+      <p>📧 info@electro.com</p>
+      <p>🕐 Mon-Sat: 10AM – 8PM</p>
+    </div>
+
+  </div>
+
+  <hr style="border:none; height:1px; background:rgba(255,255,255,0.07);">
+
+  <div class="bottom">
+    <p>© 2026 Electro Nova | All Rights Reserved</p>
+  </div>
+</footer>
+
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1100,
+    once: true,
+    easing: 'ease-out-cubic',
+    offset: 50
+  });
+</script>
+
+
+<script>
+  var map = L.map('map').setView([24.8607, 67.0011], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+  L.marker([24.8607, 67.0011])
+    .addTo(map)
+    .bindPopup("Electro Nova Showroom")
+    .openPopup();
+
+    const progressBar = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  progressBar.style.width = pct + '%';
+}, { passive: true });
+
+const cursor     = document.getElementById('custom-cursor');
+const follower   = document.getElementById('cursor-follower');
+let fX = 0, fY = 0, mX = 0, mY = 0;
+
+document.addEventListener('mousemove', e => {
+  mX = e.clientX; mY = e.clientY;
+  cursor.style.left = mX + 'px';
+  cursor.style.top  = mY + 'px';
+});
+
+
+const hoverTargets = document.querySelectorAll('a, button, .logo img');
+hoverTargets.forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+});
+
+const cardTargets = document.querySelectorAll('.card, .review-card');
+cardTargets.forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-card'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-card'));
+});
+
+document.querySelectorAll('nav a').forEach(link => {
+  link.addEventListener('mousemove', e => {
+    const rect = link.getBoundingClientRect();
+    const cx = rect.left + rect.width  / 2;
+    const cy = rect.top  + rect.height / 2;
+    const dx = (e.clientX - cx) * 0.28;
+    const dy = (e.clientY - cy) * 0.28;
+    link.style.transform = `translate(${dx}px, ${dy}px) translateY(-1px)`;
+  });
+  link.addEventListener('mouseleave', () => {
+    link.style.transform = '';
+  });
+});
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

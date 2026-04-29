@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electro Nova Brands</title>
+
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #c8b89a;
+  color: #1a1f2e;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+#custom-cursor {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background: #1a56db;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s ease, height 0.25s ease, background 0.25s ease, opacity 0.25s ease;
+  mix-blend-mode: normal;
+  will-change: transform;
+}
+
+#cursor-follower {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(26,86,219,0.55);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.35s ease, height 0.35s ease, border-color 0.3s ease, opacity 0.3s ease;
+  will-change: transform;
+}
+
+body.cursor-hover #custom-cursor {
+  width: 20px;
+  height: 20px;
+  background: rgba(26,86,219,0.75);
+}
+
+body.cursor-hover #cursor-follower {
+  width: 58px;
+  height: 58px;
+  border-color: rgba(26,86,219,0.35);
+}
+
+body.cursor-card #custom-cursor {
+  width: 16px;
+  height: 16px;
+  background: #1a56db;
+  mix-blend-mode: multiply;
+}
+
+body.cursor-card #cursor-follower {
+  width: 72px;
+  height: 72px;
+  border-color: rgba(26,86,219,0.2);
+}
+
+
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #1a56db, #60a5fa, #a5c8ff);
+  z-index: 9999;
+  box-shadow: 0 0 10px rgba(26,86,219,0.6), 0 0 20px rgba(96,165,250,0.3);
+  transition: width 0.05s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+
+
+@keyframes headerSlideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+@keyframes logoPulse {
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 0px rgba(26,86,219,0)); }
+  50%       { filter: brightness(1.08) drop-shadow(0 0 10px rgba(26,86,219,0.35)); }
+}
+
+@keyframes accentFloat {
+  0%, 100% { transform: translateX(-50%) scaleX(1);   opacity: 1; }
+  50%       { transform: translateX(-50%) scaleX(1.7); opacity: 0.65; }
+}
+
+@keyframes shimmerSweep {
+  0%   { left: -100%; }
+  100% { left: 200%; }
+}
+
+@keyframes footerLogoBreathe {
+  0%, 100% { opacity: 1;    transform: scale(1); }
+  50%       { opacity: 0.88; transform: scale(0.97); }
+}
+
+@keyframes titleReveal {
+  from { opacity: 0; letter-spacing: 0.18em; transform: translateY(18px); }
+  to   { opacity: 1; letter-spacing: -0.02em; transform: translateY(0); }
+}
+
+@keyframes btnRipple {
+  0%   { transform: scale(0); opacity: 0.35; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+@keyframes brandBtnPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.94); }
+  100% { transform: scale(1); }
+}
+
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 0 48px;
+  height: 80px;
+  background: #0f2044;
+  border-bottom: 3px solid #0d0d0d;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.22);
+  animation: headerSlideDown 0.7s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+
+.logo img {
+  width: 140px;
+  height: 70px;
+  object-fit: contain;
+  animation: logoPulse 4s ease-in-out infinite;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.logo img:hover {
+  transform: scale(1.07) rotate(-1deg);
+}
+
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+nav a {
+  position: relative;
+  color: #c8d6e8;
+  padding: 8px 15px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  overflow: hidden;
+  transition:
+    color          0.3s cubic-bezier(0.4,0,0.2,1),
+    border-color   0.3s cubic-bezier(0.4,0,0.2,1),
+    background     0.3s cubic-bezier(0.4,0,0.2,1),
+    letter-spacing 0.3s cubic-bezier(0.4,0,0.2,1),
+    transform      0.3s cubic-bezier(0.4,0,0.2,1);
+  white-space: nowrap;
+}
+
+
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 15px;
+  right: 15px;
+  height: 2px;
+  background: linear-gradient(90deg, #1a56db, #60a5fa);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+
+nav a:hover {
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  letter-spacing: 0.12em;
+  transform: translateY(-1px);
+}
+
+nav a:hover::after {
+  transform: scaleX(1);
+}
+
+
+h1 {
+  text-align: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  color: #0f2044;
+  margin: 48px 0 8px;
+  font-size: clamp(26px, 4vw, 42px);
+  letter-spacing: -0.02em;
+  animation: titleReveal 0.9s cubic-bezier(0.22,1,0.36,1) both 0.2s;
+}
+
+h1::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 3px;
+  background: #1a56db;
+  margin: 14px auto 0;
+  border-radius: 2px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: accentFloat 3.5s ease-in-out infinite;
+}
+
+
+.brands {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  width: 85%;
+  margin: 32px auto 20px;
+  padding: 10px;
+}
+
+.brand-btn {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: 11px 20px;
+  border: 2px solid #0f2044;
+  border-radius: 999px;
+  color: #0f2044;
+  background: transparent;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition:
+    background    0.3s cubic-bezier(0.4,0,0.2,1),
+    color         0.3s cubic-bezier(0.4,0,0.2,1),
+    box-shadow    0.3s cubic-bezier(0.4,0,0.2,1),
+    transform     0.35s cubic-bezier(0.34,1.56,0.64,1),
+    border-color  0.3s cubic-bezier(0.4,0,0.2,1),
+    letter-spacing 0.3s ease;
+}
+
+
+.brand-btn::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) scale(0);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.brand-btn:active::after {
+  animation: btnRipple 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+
+.brand-btn:hover {
+  transform: translateY(-3px) scale(1.04);
+  border-color: #1a56db;
+  box-shadow: 0 8px 20px rgba(15,32,68,0.2);
+  letter-spacing: 0.09em;
+}
+
+.brand-btn.active {
+  background: #0f2044;
+  color: #c8b89a;
+  border-color: #1a56db;
+  box-shadow:
+    0 4px 14px rgba(15,32,68,0.3),
+    0 0 20px rgba(26,86,219,0.15);
+  transform: translateY(-2px);
+  animation: brandBtnPop 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+
+.section {
+  display: none;
+  width: 86%;
+  max-width: 1200px;
+  margin: 36px auto 72px;
+}
+
+#featured { display: block; }
+
+.extra { display: none; }
+
+
+.section-title {
+  text-align: center;
+  color: #0f2044;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(18px, 2.5vw, 26px);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: #1a56db;
+  margin: 12px auto 0;
+  border-radius: 2px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: accentFloat 3.5s ease-in-out infinite;
+}
+
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+
+.card {
+  background: #ede5d8;
+  border: 2px solid black;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  position: relative;
+  box-shadow:
+    0 1px 2px  rgba(15,32,68,0.04),
+    0 4px 8px  rgba(15,32,68,0.06),
+    0 12px 24px rgba(15,32,68,0.09);
+  transition:
+    transform    0.45s cubic-bezier(0.34,1.56,0.64,1),
+    box-shadow   0.45s cubic-bezier(0.4,0,0.2,1),
+    border-color 0.35s cubic-bezier(0.4,0,0.2,1);
+  will-change: transform;
+}
+
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255,255,255,0.18) 50%,
+    transparent 80%
+  );
+  z-index: 3;
+  pointer-events: none;
+}
+
+.card:hover::before {
+  animation: shimmerSweep 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+
+.card:hover {
+  transform: translateY(-12px) scale(1.015);
+  border-color: #1a56db;
+  box-shadow:
+    0 2px 4px   rgba(15,32,68,0.05),
+    0 8px 16px  rgba(15,32,68,0.09),
+    0 24px 48px rgba(15,32,68,0.14),
+    0 48px 80px rgba(15,32,68,0.11),
+    0 0   40px  rgba(26,86,219,0.12);
+}
+
+
+.img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  background: white;
+  border-bottom: 2px solid #1e3d72;
+  transition: transform 0.6s cubic-bezier(0.4,0,0.2,1), filter 0.4s ease;
+}
+
+
+.img-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(255,255,255,0.12) 0%,
+    rgba(26,86,219,0.08) 60%,
+    rgba(15,32,68,0.22) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1);
+  pointer-events: none;
+}
+
+.card:hover .img-wrap::after {
+  opacity: 1;
+  backdrop-filter: blur(2px) saturate(1.15);
+  -webkit-backdrop-filter: blur(2px) saturate(1.15);
+}
+
+.card:hover img {
+  transform: scale(1.07);
+  filter: brightness(1.04) saturate(1.1);
+}
+
+
+.card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #061d54;
+  padding: 16px 16px 6px;
+  letter-spacing: -0.01em;
+  transition: letter-spacing 0.3s ease, color 0.3s ease;
+}
+
+.card:hover h3 {
+  letter-spacing: 0.01em;
+  color: #1a56db;
+}
+
+
+.card h3 + p + h3,
+.card h3 ~ h3 {
+  color: #0f2044;
+  padding-bottom: 4px;
+}
+
+.card p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  color: #6b7280;
+  line-height: 1.65;
+  padding: 0 16px 16px;
+  flex: 1;
+  transition: color 0.3s ease;
+}
+
+
+.btn {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  margin: 0 16px 16px;
+  padding: 10px 20px;
+  background: #0f2044;
+  color: #ffffff;
+  border: 2px solid #1a56db;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition:
+    background     0.3s cubic-bezier(0.4,0,0.2,1),
+    box-shadow     0.3s cubic-bezier(0.4,0,0.2,1),
+    transform      0.35s cubic-bezier(0.34,1.56,0.64,1),
+    letter-spacing 0.3s ease,
+    border-color   0.3s ease;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.btn:active::after {
+  animation: btnRipple 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+
+.btn:hover {
+  background: #1a56db;
+  border-color: #60a5fa;
+  box-shadow: 0 6px 20px rgba(26,86,219,0.38);
+  transform: translateY(-3px) scale(1.03);
+  letter-spacing: 0.08em;
+}
+
+
+.extra {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: #374151;
+  line-height: 1.75;
+  padding: 0 16px 16px;
+  text-align: left;
+  background: #e8dfd0;
+  border-top: 1px solid rgba(30,61,114,0.15);
+}
+
+
+hr {
+  border: none;
+  height: 1px;
+  background: rgba(0,0,0,0.07);
+  margin: 0;
+}
+
+
+footer {
+  background: #0f2044;
+  border-top: 3px solid #1a56db;
+  padding: 64px 40px 0;
+  color: #c8d6e8;
+}
+
+.lastarea {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 48px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+}
+
+.mimi,
+.meow {
+  text-align: left;
+}
+
+.lastlogo {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+  margin: 0 0 16px 0;
+  animation: footerLogoBreathe 5s ease-in-out infinite;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), filter 0.3s ease;
+}
+
+.lastlogo:hover {
+  transform: scale(1.08);
+  filter: brightness(1.15) drop-shadow(0 0 12px rgba(26,86,219,0.4));
+  animation-play-state: paused;
+}
+
+.mimi p {
+  font-size: 14px;
+  color: rgba(200,214,232,0.65);
+  line-height: 1.75;
+  transition: color 0.3s ease;
+}
+
+.mimi p:hover {
+  color: rgba(200,214,232,0.9);
+}
+
+.meow h3,
+.mimi h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 18px;
+}
+
+.meow a {
+  display: block;
+  color: rgba(200,214,232,0.65);
+  font-size: 14px;
+  text-decoration: none;
+  padding: 6px 0;
+  position: relative;
+  overflow: hidden;
+  transition:
+    color        0.3s cubic-bezier(0.4,0,0.2,1),
+    padding-left 0.35s cubic-bezier(0.4,0,0.2,1),
+    letter-spacing 0.3s ease;
+}
+
+.meow a::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, #1a56db, #60a5fa);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+
+.meow a:hover {
+  color: #ffffff;
+  padding-left: 10px;
+  letter-spacing: 0.04em;
+}
+
+.meow a:hover::after {
+  transform: scaleX(0.6);
+}
+
+.bottom {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  font-size: 13px;
+  color: rgba(200,214,232,0.45);
+  letter-spacing: 0.03em;
+  transition: color 0.3s ease;
+}
+
+.bottom:hover {
+  color: rgba(200,214,232,0.7);
+}
+
+@media (max-width: 1024px) {
+  .products { grid-template-columns: repeat(2, 1fr); }
+  .lastarea { grid-template-columns: 1fr 1fr; gap: 36px; }
+}
+
+@media (max-width: 768px) {
+  header { padding: 14px 20px; height: auto; justify-content: center; }
+  nav { flex-wrap: wrap; justify-content: center; }
+  nav a { padding: 6px 10px; font-size: 11px; }
+  h1 { font-size: 24px; }
+  .brands { width: 95%; }
+  .products { grid-template-columns: 1fr; gap: 18px; }
+  .card img { height: 170px; }
+  .lastarea { grid-template-columns: 1fr; gap: 32px; }
+  footer { padding: 48px 24px 0; }
+}
+
+@media (max-width: 480px) {
+  .brand-btn { font-size: 12px; padding: 8px 14px; }
+  .section { width: 94%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+  <div id="scroll-progress"></div>
+
+
+<div id="custom-cursor"></div>
+<div id="cursor-follower"></div>
+
+<header data-aos="fade-down">
+  <div class="logo">
+    <img src="WhatsApp Image 2026-03-29 at 12.50.09 PM.jpeg">
+  </div>
+
+  <nav>
+    <a href="home.html">HOME</a>
+    <a href="about.html">ABOUT US</a>
+    <a href="electro-nova-products (1).html">PRODUCTS</a>
+    <a href="electro-nova-brands (1).html">BRANDS</a>
+    <a href="categories.html">CATEGORIES</a>
+    <a href="contact.html">CONTACT</a>
+  </nav>
+</header>
+
+<h1 data-aos="fade-right">Our Brands</h1>
+
+
+<div class="brands">
+  <div class="brand-btn" data-target="featured">Featured</div>
+  <div class="brand-btn" data-target="apple">Apple</div>
+  <div class="brand-btn" data-target="samsung">Samsung</div>
+  <div class="brand-btn" data-target="dell">Dell</div>
+  <div class="brand-btn" data-target="sony">Sony</div>
+</div>
+
+<div class="section" id="featured">
+  <div class="section-title">FEATURED PRODUCTS</div>
+  <div class="products">
+
+    <div class="card" data-aos="fade-up" data-aos-delay="0" data-aos-duration="800">
+      <div class="img-wrap"><img src="alflucio-computer-vintage-4596623.jpg"></div>
+      <h3>VINTAGE COMPUTER</h3>
+      <p>This intuitive interface helps you position your data perfectly against the heritage, ensuring your computing is always balanced and professional.</p>
+      <h3>PKR 78,900</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision vintage processor array, the Nova Tech Vintage Computer delivers real-time execution for over 100 legacy applications. Its hyper-efficient cooling management system ensures stable hours of continuous operation, providing a seamless bridge between your retro collection and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
+      <div class="img-wrap"><img src="evilowl-playstation-6689793.jpg"></div>
+      <h3>NOVA STATION</h3>
+      <p>This intuitive interface helps you position your content perfectly against the screen, ensuring your viewing is always balanced and professional.</p>
+      <h3>PKR 20,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision multi-touch sensor array, the Nova Tech Tablet delivers real-time responsiveness for over 100 creative apps. Its hyper-efficient power management system ensures up to 18 hours of continuous performance, providing a seamless bridge between your digital canvas and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
+      <div class="img-wrap"><img src="splitshire-apple-407122.jpg"></div>
+      <h3>APPLE PC</h3>
+      <p>This intuitive interface helps you position your windows perfectly against the resolution, ensuring your workflow is always balanced and professional.</p>
+      <h3>PKR 90,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision silicon processor array, the Nova Tech Apple PC delivers real-time performance for over 100 professional workflows. Its hyper-efficient thermal management system ensures sustained levels of continuous heavy-lifting, providing a seamless bridge between your creative projects and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="300" data-aos-duration="800">
+      <div class="img-wrap"><img src="thalienano-cpu-5694565.jpg"></div>
+      <h3>MAX CPU</h3>
+      <p>This intuitive interface helps you position your processing tasks perfectly against the clock speed, ensuring your multitasking is always balanced and professional.</p>
+      <h3>PKR 98,990</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision multi-core processor array, the Nova Tech Max CPU delivers real-time execution for over 100 intensive threads. Its hyper-efficient thermal management system ensures sustained levels of continuous peak-performance, providing a seamless bridge between your complex workloads and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
+      <div class="img-wrap"><img src="braite-ball-point-pen-2099187.jpg"></div>
+      <h3>ELECTRIC PEN</h3>
+      <p>This intuitive interface helps you position your strokes perfectly against the canvas, ensuring your sketches are always balanced and professional.</p>
+      <h3>PKR 35,981</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision pressure sensor array, the Nova Tech Electric Pen delivers real-time responsiveness for over 100 drawing styles. Its hyper-efficient battery management system ensures up to 20 hours of continuous creativity, providing a seamless bridge between your hand-drawn art and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="500" data-aos-duration="800">
+      <div class="img-wrap"><img src="lilo401-watch-6853386.jpg"></div>
+      <h3>NOVA WATCH</h3>
+      <p>This intuitive interface helps you position your health goals perfectly against your lifestyle, ensuring your stats are always balanced and professional.</p>
+      <h3>PKR 67,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision biometric sensor array, the Nova Tech Watch delivers real-time analytics for over 100 sports modes. Its hyper-efficient battery management system ensures up to 14 days of continuous tracking, providing a seamless bridge between your health data and daily productivity.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="section" id="apple">
+  <div class="section-title">APPLE PRODUCTS</div>
+  <div class="products">
+
+    <div class="card" data-aos="fade-up" data-aos-delay="0" data-aos-duration="800">
+      <div class="img-wrap"><img src="alflucio-condenser-unit-6605975.jpg"></div>
+      <h3>ELECTRIC COOLER</h3>
+      <p>This intuitive interface helps you position your temperature perfectly against the environment, ensuring your cooling is always balanced and professional.</p>
+      <h3>PKR 1,1000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision thermal sensor array, the Nova Tech Electric Cooler delivers real-time regulation for over 100 storage conditions. Its hyper-efficient airflow management system ensures up to 48 hours of continuous chilling, providing a seamless bridge between your fresh supplies and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
+      <div class="img-wrap"><img src="deni_eliash-pc-6046539.jpg"></div>
+      <h3>APPLE PC</h3>
+      <p>This intuitive interface helps you position your windows perfectly against the resolution, ensuring your workflow is always balanced and professional.</p>
+      <h3>PKR 20,0000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision silicon processor array, the Nova Tech Apple PC delivers real-time performance for over 100 professional workflows. Its hyper-efficient thermal management system ensures sustained levels of continuous heavy-lifting, providing a seamless bridge between your creative projects and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
+      <div class="img-wrap"><img src="splitshire-apple-407122.jpg"></div>
+      <h3>LAPTOP</h3>
+      <p>This intuitive interface helps you position your windows perfectly against the resolution, ensuring your workflow is always balanced and professional.</p>
+      <h3>PKR 50,0000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision M5 silicon processor array, the Nova Tech Apple Laptop delivers real-time execution for over 100 creative workflows. Its hyper-efficient thermal management system ensures sustained levels of continuous performance, providing a seamless bridge between your professional projects and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="300" data-aos-duration="800">
+      <div class="img-wrap"><img src="studio_iris-podcast-7876792.jpg"></div>
+      <h3>SPEAKERS SET</h3>
+      <p>This intuitive interface helps you position your speakers perfectly against the room's acoustics, ensuring your soundstage is always balanced and professional.</p>
+      <h3>PKR 59,8900</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision beamforming driver array, the Nova Tech Apple Speaker Set delivers real-time spatial audio for over 100 sound environments. Its hyper-efficient power management system ensures sustained levels of continuous high-fidelity playback, providing a seamless bridge between your immersive media and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
+      <div class="img-wrap"><img src="maxwdhs-airpods-7976095.jpg"></div>
+      <h3>AIRPODS</h3>
+      <p>This intuitive interface helps you position your audio perfectly against the ambient noise, ensuring your sound is always balanced and professional.</p>
+      <h3>PKR 78,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision spatial audio array, the Nova Tech Airpods deliver real-time immersion for over 100 sound environments. Its hyper-efficient wireless management system ensures up to 30 hours of continuous listening, providing a seamless bridge between your calls and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="500" data-aos-duration="800">
+      <div class="img-wrap"><img src="pexels-jakubzerdzicki-25020272.jpg"></div>
+      <h3>ELECTRONIC CAMERA SET</h3>
+      <p>This intuitive interface helps you position your subject perfectly against the horizon, ensuring your shots are always balanced and professional.</p>
+      <h3>PKR 80,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision optical sensor array, the Nova Tech Electric Camera delivers real-time analytics for over 100 shooting modes. Its hyper-efficient battery management system ensures up to 12 hours of continuous filming, providing a seamless bridge between your visual storytelling and daily productivity.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="section" id="samsung">
+  <div class="section-title">SAMSUNG PRODUCTS</div>
+  <div class="products">
+
+    <div class="card" data-aos="fade-up" data-aos-delay="0" data-aos-duration="800">
+      <div class="img-wrap"><img src="WhatsApp Image 2026-03-29 at 5.28.40 PM (1).jpeg"></div>
+      <h3>ELECTRIC CLOCK</h3>
+      <p>This intuitive interface helps you position your schedule perfectly against the timeline, ensuring your routine is always balanced and professional.</p>
+      <h3>PKR 56,900</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision digital oscillator array, the Nova Tech Samsung Electric Clock delivers real-time synchronization for over 100 time zones. Its hyper-efficient power management system ensures years of continuous precision, providing a seamless bridge between your daily agenda and productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
+      <div class="img-wrap"><img src="refer.jpg"></div>
+      <h3>REFRIGERATOR</h3>
+      <p>This intuitive interface helps you position your storage perfectly against the internal climate, ensuring your cooling is always balanced and professional.</p>
+      <h3>PKR 78,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision thermal sensor array, the Nova Tech Refrigerator delivers real-time regulation for over 100 food categories. Its hyper-efficient cooling management system ensures up to 24/7 levels of continuous freshness, providing a seamless bridge between your kitchen supplies and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
+      <div class="img-wrap"><img src="wishedcn0-radio-978868.jpg"></div>
+      <h3>ADVANCE RADIO</h3>
+      <p>This intuitive interface helps you position your stations perfectly against the airwaves, ensuring your listening is always balanced and professional.</p>
+      <h3>PKR 45,6700</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision frequency tuner array, the Nova Tech Radio delivers real-time reception for over 100 signal bands. Its hyper-efficient power management system ensures days of continuous playback, providing a seamless bridge between your audio broadcasts and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="300" data-aos-duration="800">
+      <div class="img-wrap"><img src="alflucio-air-conditioner-6605966.jpg"></div>
+      <h3>SAMSUNG AC</h3>
+      <p>This intuitive interface helps you position your airflow perfectly against the room temperature, ensuring your environment is always balanced and professional.</p>
+      <h3>PKR 90,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision inverter compressor array, the Nova Tech Samsung AC delivers real-time cooling for over 100 indoor conditions. Its hyper-efficient energy management system ensures sustained levels of continuous comfort, providing a seamless bridge between your home atmosphere and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
+      <div class="img-wrap"><img src="stocksnap-headphones-2588056.jpg"></div>
+      <h3>HEADPHONES</h3>
+      <p>This intuitive interface helps you position your audio perfectly against the ambient noise, ensuring your soundstage is always balanced and professional.</p>
+      <h3>PKR 20,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision driver array, the Nova Tech Headphones deliver real-time immersion for over 100 audio profiles. Its hyper-efficient battery management system ensures up to 50 hours of continuous listening, providing a seamless bridge between your focus and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="500" data-aos-duration="800">
+      <div class="img-wrap"><img src="stocksnap-keyboard-2590095.jpg"></div>
+      <h3>KEYBOARD</h3>
+      <p>This intuitive interface helps you position your typing perfectly against the keys, ensuring your data entry is always balanced and professional.</p>
+      <h3>PKR 50,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision mechanical switch array, the Nova Tech Keyboard delivers real-time response for over 100 typing styles. Its hyper-efficient input management system ensures millions of continuous keystrokes, providing a seamless bridge between your digital commands and daily productivity.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="section" id="dell">
+  <div class="section-title">DELL PRODUCTS</div>
+  <div class="products">
+
+    <div class="card" data-aos="fade-up" data-aos-delay="0" data-aos-duration="800">
+      <div class="img-wrap"><img src="8618939-mouse-6920467.jpg"></div>
+      <h3>XPS MOUSE</h3>
+      <p>This intuitive interface helps you position your cursor perfectly against the resolution, ensuring your navigation is always balanced and professional.</p>
+      <h3>PKR 35,2300</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">This intuitive interface helps you position your cursor perfectly against the resolution, ensuring your navigation is always balanced and professional.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
+      <div class="img-wrap"><img src="pexels-tv-1844964.jpg"></div>
+      <h3>OLDSTYLE TV</h3>
+      <p>This intuitive interface helps you position your cursor perfectly against the resolution, ensuring your navigation is always balanced and professional.</p>
+      <h3>PKR 80,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision LED panel array housed in a premium grain finish, the Nova Tech Wood Style TV delivers real-time 4K rendering for over 100 streaming platforms. Its hyper-efficient display management system ensures thousands of hours of continuous entertainment, providing a seamless bridge between your home decor and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
+      <div class="img-wrap"><img src="stocksnap-people-2576803.jpg"></div>
+      <h3>ADVANCE DRONE</h3>
+      <p>This intuitive interface helps you position your flight path perfectly against complex obstacles, ensuring your aerial maneuvers are always balanced and professional.</p>
+      <h3>PKR 20,0000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision AI-driven sensor array, the Nova Tech Advance Drone delivers real-time navigation for over 100 complex environments. Its hyper-efficient battery management system ensures up to 51 minutes of continuous flight time, providing a seamless bridge between your cinematic vision and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="300" data-aos-duration="800">
+      <div class="img-wrap"><img src="WhatsApp Image 2026-03-29 at 5.28.40 PM.jpeg"></div>
+      <h3>XSC CAMERA</h3>
+      <p>This intuitive interface helps you position your frame perfectly against the lighting, ensuring your photography is always balanced and professional.</p>
+      <h3>PKR 90,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision CMOS sensor array, the Nova Tech Camera delivers real-time processing for over 100 shooting scenarios. Its hyper-efficient image management system ensures thousands of continuous high-resolution captures, providing a seamless bridge between your visual memories and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
+      <div class="img-wrap"><img src="WhatsApp Image 2026-03-29 at 5.28.41 PM.jpeg"></div>
+      <h3>DELL LAPTOP</h3>
+      <p>This intuitive interface helps you position your applications perfectly against the system resources, ensuring your multitasking is always balanced and professional.</p>
+      <h3>PKR 23,4000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision multi-core processor array, the Nova Tech Laptop delivers real-time execution for over 100 software suites. Its hyper-efficient thermal management system ensures sustained levels of continuous high-speed performance, providing a seamless bridge between your complex data and daily productivity.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="500" data-aos-duration="800">
+      <div class="img-wrap"><img src="jeanvdmeulen-black-4389880.jpg"></div>
+      <h3>MS TABLET</h3>
+      <p>This intuitive interface helps you position your gestures perfectly against the interface, ensuring your navigation is always balanced and professional.</p>
+      <h3>PKR 89,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision capacitive sensor array, the Nova Tech Tablet delivers real-time responsiveness for over 100 creative apps. Its hyper-efficient power management system ensures up to 15 hours of continuous utility, providing a seamless bridge between your mobile flexibility and daily productivity.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="section" id="sony">
+  <div class="section-title">SONY PRODUCTS</div>
+  <div class="products">
+
+    <div class="card" data-aos="fade-up" data-aos-delay="0" data-aos-duration="800">
+      <div class="img-wrap"><img src="WhatsApp Image 2026-03-29 at 5.28.40 PM.jpeg"></div>
+      <h3>SONY CAMERA</h3>
+      <p>This intuitive interface helps you capture your moments perfectly against the lighting, ensuring your photography is always balanced and professional.</p>
+      <h3>PKR 120,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision optical sensor array, the Sony Camera delivers real-time clarity for over 100 shooting modes. Its advanced stabilization system ensures smooth, professional shots, providing a seamless bridge between creativity and daily photography.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
+      <div class="img-wrap"><img src="stocksnap-headphones-2588056.jpg"></div>
+      <h3>SONY HEADPHONES</h3>
+      <p>This intuitive interface helps you experience your audio perfectly against ambient noise, ensuring immersive listening every time.</p>
+      <h3>PKR 45,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision noise-canceling system, the Sony Headphones deliver real-time sound clarity for over 100 audio environments. Its long battery life ensures uninterrupted listening for hours.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
+      <div class="img-wrap"><img src="pexels-tv-1844964.jpg"></div>
+      <h3>SONY BRAVIA TV</h3>
+      <p>This intuitive interface helps you position your visuals perfectly against the resolution, ensuring cinematic viewing at home.</p>
+      <h3>PKR 150,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-precision 4K HDR display, the Sony Bravia TV delivers real-time vibrant visuals for all content types. Its smart system ensures seamless streaming and entertainment.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="300" data-aos-duration="800">
+      <div class="img-wrap"><img src="studio_iris-podcast-7876792.jpg"></div>
+      <h3>SONY SPEAKER</h3>
+      <p>This intuitive interface helps you position your sound perfectly against the environment, ensuring powerful bass and clarity.</p>
+      <h3>PKR 35,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-power driver system, the Sony Speaker delivers deep bass and crisp sound. Its durable design ensures long-lasting performance for indoor and outdoor use.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
+      <div class="img-wrap"><img src="evilowl-playstation-6689793.jpg"></div>
+      <h3>PLAYSTATION 5</h3>
+      <p>This intuitive interface helps you experience gaming perfectly against high-speed performance, ensuring smooth gameplay.</p>
+      <h3>PKR 220,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high-speed SSD and advanced GPU, the PS5 delivers real-time ultra-fast gaming for next-gen experiences. Its powerful system ensures smooth and immersive gameplay.</div>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-delay="500" data-aos-duration="800">
+      <div class="img-wrap"><img src="wikimediaimages-video-game-console-2202592.jpg"></div>
+      <h3>SONY XPERIA</h3>
+      <p>This intuitive interface helps you manage your tasks perfectly against performance, ensuring smooth mobile experience.</p>
+      <h3>PKR 95,000</h3>
+      <div class="btn view-btn">VIEW DETAILS</div>
+      <div class="extra">Description: Engineered with a high performance chipset, the Sony Xperia delivers fast processing for daily tasks and entertainment. Its sleek design ensures a premium smartphone experience.</div>
+    </div>
+
+  </div>
+</div>
+
+<hr>
+
+<footer class="footer">
+  <div class="lastarea">
+
+    <div class="mimi" data-aos="fade-right" data-aos-duration="800">
+      <img src="WhatsApp Image 2026-03-29 at 12.50.09 PM.jpeg" class="lastlogo">
+      <p>Electro Nova brings innovation, quality, and smart solutions.</p>
+    </div>
+
+    <div class="meow" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
+      <h3>Quick Links</h3>
+      <a href="home.html">Home</a>
+      <a href="electro-nova-products (1).html">Products</a>
+      <a href="electro-nova-brands (1).html">Brands</a>
+      <a href="categories.html">Categories</a>
+      <a href="contact.html">Contact</a>
+    </div>
+
+    <div class="mimi" data-aos="fade-left" data-aos-delay="200" data-aos-duration="800">
+      <h3>Contact</h3>
+      <p>📍 Karachi, Pakistan</p>
+      <p>📞 +92-300-1234567</p>
+      <p>📧 info@electro.com</p>
+      <p>🕐 Mon-Sat: 10AM - 8PM</p>
+    </div>
+
+  </div>
+  <hr>
+  <div class="bottom">
+    <p>© 2026 Electro Nova | All Rights Reserved</p>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+<script>
+AOS.init({ duration: 1000, once: true, easing: 'ease-in-out' });
+
+$(".brand-btn").click(function () {
+  let target = $(this).data("target");
+  $(".section").hide();
+  $("#" + target).fadeIn(350);
+  $(".brand-btn").removeClass("active");
+  $(this).addClass("active");
+
+  // Re-trigger AOS for newly revealed cards
+  setTimeout(function () { AOS.refreshHard(); }, 10);
+});
+
+
+$(document).on("click", ".view-btn", function () {
+  $(this).siblings(".extra").slideToggle(320);
+});
+
+
+
+const progressBar = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  progressBar.style.width = pct + '%';
+}, { passive: true });
+
+
+const cursor     = document.getElementById('custom-cursor');
+const follower   = document.getElementById('cursor-follower');
+let fX = 0, fY = 0, mX = 0, mY = 0;
+
+document.addEventListener('mousemove', e => {
+  mX = e.clientX; mY = e.clientY;
+  cursor.style.left = mX + 'px';
+  cursor.style.top  = mY + 'px';
+});
+document.querySelectorAll('nav a').forEach(link => {
+  link.addEventListener('mousemove', e => {
+    const rect = link.getBoundingClientRect();
+    const cx = rect.left + rect.width  / 2;
+    const cy = rect.top  + rect.height / 2;
+    const dx = (e.clientX - cx) * 0.28;
+    const dy = (e.clientY - cy) * 0.28;
+    link.style.transform = `translate(${dx}px, ${dy}px) translateY(-1px)`;
+  });
+  link.addEventListener('mouseleave', () => {
+    link.style.transform = '';
+  });
+});
+
+const tiltCards = document.querySelectorAll('.card, .review-card');
+const MAX_TILT = 8;
+
+tiltCards.forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width  / 2;
+    const cy = rect.top  + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width  / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+    const rotX = -dy * MAX_TILT;
+    const rotY =  dx * MAX_TILT;
+    card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-10px) scale(1.015)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.transition = 'transform 0.55s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.45s ease, border-color 0.35s ease';
+    setTimeout(() => { card.style.transition = ''; }, 550);
+  });
+  card.addEventListener('mouseenter', () => {
+    card.style.transition = 'transform 0.12s ease, box-shadow 0.45s ease, border-color 0.35s ease';
+  });
+});
+const footerLogo = document.getElementById('footer-logo');
+const footer     = document.getElementById('site-footer');
+
+if (footerLogo && footer) {
+  let glowActive = false;
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !glowActive) {
+        glowActive = true;
+        footerLogo.classList.add('cyber-active');
+        // After 6s, revert to gentle breathe
+        setTimeout(() => {
+          footerLogo.classList.remove('cyber-active');
+        }, 6000);
+      } else if (!entry.isIntersecting) {
+        glowActive = false;
+        footerLogo.classList.remove('cyber-active');
+      }
+    });
+  }, { threshold: 0.4 });
+  observer.observe(footer);
+}
+</script>
+
+</body>
+</html>
